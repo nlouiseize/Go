@@ -31,7 +31,7 @@ func main() {
 	var clientPolicy = aero.NewClientPolicy()
 	clientPolicy.User = User
 	clientPolicy.Password = Password
-	//clientPolicy.ClusterName = ClusterName
+	clientPolicy.ClusterName = ClusterName
 
 	client, err := aero.NewClientWithPolicy(clientPolicy, hostName, port)
 	panicOnError(err)
