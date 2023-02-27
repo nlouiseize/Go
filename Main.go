@@ -14,16 +14,26 @@ func panicOnError(err error) {
 }
 
 var (
-	hostName      = "10.128.2.24"
-	port      int = 3000
-	namespace     = "test"
-	setName       = "peeps"
-	myKey     int = 1
+	hostName        = "10.128.2.24"
+	port        int = 3000
+	namespace       = "test"
+	setName         = "peeps"
+	myKey       int = 1
+	User            = "admin"
+	Password        = "admin123"
+	ClusterName     = "aeroclustersrc"
 )
 
 func main() {
+
 	// define a client to connect to
-	client, err := aero.NewClient(hostName, port)
+
+	var clientPolicy = aero.NewClientPolicy()
+	clientPolicy.User = User
+	clientPolicy.Password = Password
+	clientPolicy.ClusterName = ClusterName
+
+	client, err := aero.NewClientWithPolicy(clientPolicy, hostName, port)
 	panicOnError(err)
 
 	// Create new write policy
