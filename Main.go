@@ -14,7 +14,7 @@ func panicOnError(err error) {
 }
 
 var (
-	hostName        = "10.128.2.24"
+	hostName        = "aeroclustersrc"
 	port        int = 3000
 	namespace       = "test"
 	setName         = "peeps"
@@ -33,7 +33,10 @@ func main() {
 	clientPolicy.Password = Password
 	clientPolicy.ClusterName = ClusterName
 
-	client, err := aero.NewClientWithPolicy(clientPolicy, hostName, port)
+	//client, err := aero.NewClientWithPolicy(clientPolicy, hostName, port)
+	//panicOnError(err)
+
+	client, err := aero.NewClient(hostName, port)
 	panicOnError(err)
 
 	// Create new write policy
