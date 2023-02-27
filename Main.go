@@ -14,7 +14,7 @@ func panicOnError(err error) {
 }
 
 var (
-	hostName        = "aeroclustersrc"
+	hostName        = "10.128.2.24"
 	port        int = 3000
 	namespace       = "test"
 	setName         = "peeps"
