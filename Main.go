@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	aero "github.com/aerospike/aerospike-client-go"
 	"html/template"
 	"log"
 	"net/http"
@@ -50,7 +51,35 @@ func main() {
 		myKey = r.FormValue("PK")
 		name = r.FormValue("name")
 		age = r.FormValue("age")
-		fmt.Println(name, age)
+
+		client, err := aero.NewClient(hostName, ClusterPort)
+		panicOnError(err)
+
+		// Create new write policy
+		policy := aero.NewWritePolicy(0, 0)
+		policy.SendKey = true
+
+		key, err := aero.NewKey(namespace, setName, myKey)
+		panicOnError(err)
+
+		// define some bins with data
+		bins := aero.BinMap{
+			//	"PK":   myKey,
+			"name": name,
+			"age":  age,
+		}
+
+		// write the bins
+		err = client.Put(policy, key, bins)
+		panicOnError(err)
+
+		// read it back!
+		rec, err := client.Get(nil, key)
+		panicOnError(err)
+		//fmt.Println(rec)
+		fmt.Printf("Record: %v", rec.Bins)
+
+		client.Close()
 
 	})
 	http.ListenAndServe(":8000", nil)
