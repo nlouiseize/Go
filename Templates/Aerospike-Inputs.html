@@ -1,0 +1,35 @@
+<!-- templates/airtime.html -->
+
+<div>
+    {{if .Success}}
+    <div>
+        <p>Your top-up is successful!</p>
+    </div>
+    {{else}}
+    <div>
+        <h1>Aerospike Inputs</h1>
+    </div>
+    <div></div>
+    <form action="/aerospike-inputs.html" method="POST">
+        <input
+                type="text" placeholder="your host IP" name="HostIP"
+        />
+        <input
+                type="text" placeholder="your namespace" name="namespace"
+        />
+        <input
+                type="text" placeholder="your set" name="set"
+        />
+        <input
+                type="text" placeholder="your PK" name="PK"
+        />
+        <input
+                type="text" placeholder="your name" name="name"
+        />
+        <input
+                type="text" placeholder="your age" name="age"
+        />
+        <input  type="submit" value="submit" />
+    </form>
+    {{end}}
+</div>
