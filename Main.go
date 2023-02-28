@@ -29,7 +29,7 @@ var (
 
 func main() {
 
-	tmpl, err := template.ParseFiles("./Templates/Aerospike-Inputs.html")
+	tmpl, err := template.ParseFiles("Aerospike-Inputs.html")
 	if err != nil {
 		log.Fatal("Parse: ", err)
 		return
