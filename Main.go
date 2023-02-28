@@ -14,30 +14,53 @@ func panicOnError(err error) {
 }
 
 var (
-	hostName        = "10.128.2.24"
+	hostName        = "3.90.26.24"
 	port        int = 3000
 	namespace       = "test"
 	setName         = "peeps"
 	myKey       int = 1
 	User            = "admin"
-	Password        = "admin123"
-	ClusterName     = "aeroclustersrc"
+	Password        = "admin"
+	ClusterName     = "mycluster"
 )
 
 func main() {
 
-	// define a client to connect to
+	// Println function is used to
+	// display output in the next line
+	fmt.Println("hostName(IP): ")
 
-	var clientPolicy = aero.NewClientPolicy()
-	clientPolicy.User = User
-	clientPolicy.Password = Password
-	clientPolicy.ClusterName = ClusterName
+	// var then variable name then variable type
+	var first string
+	// Taking input from user
+	fmt.Scanln(&first)
+	hostName = first
 
-	client, err := aero.NewClientWithPolicy(clientPolicy, hostName, port)
-	panicOnError(err)
+	fmt.Println("Enter PK: ")
+	var second int
+	fmt.Scanln(&second)
+	myKey = second
 
-	//client, err := aero.NewClient(hostName, port)
+	fmt.Println("Enter name: ")
+	var name string
+	fmt.Scanln(&name)
+	myKey = second
+
+	fmt.Println("Enter age: ")
+	var age int
+	fmt.Scanln(&age)
+	myKey = second
+
+	//var clientPolicy = aero.NewClientPolicy()
+	//clientPolicy.User = User
+	//clientPolicy.Password = Password
+	//clientPolicy.ClusterName = ClusterName
+
+	//client, err := aero.NewClientWithPolicy(clientPolicy, hostName, port)
 	//panicOnError(err)
+
+	client, err := aero.NewClient(hostName, port)
+	panicOnError(err)
 
 	// Create new write policy
 	policy := aero.NewWritePolicy(0, 0)
@@ -49,8 +72,8 @@ func main() {
 	// define some bins with data
 	bins := aero.BinMap{
 		//	"PK":   myKey,
-		"name": "nelzir",
-		"age":  29,
+		"name": name,
+		"age":  age,
 	}
 
 	// write the bins
