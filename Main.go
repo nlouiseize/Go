@@ -24,14 +24,16 @@ var (
 	setName         = "peeps"
 	myKey           = "1"
 	GoPort          = flag.Int("p", 8080, "server port")
-	name            = "nelzir"
-	age             = "30"
+	bin1name        = "name"
+	bin1value       = "nelzir"
+	bin2name        = "age"
+	bin2value       = "30"
 )
 
 func main() {
 
 	// An HTML template
-	const tmpl = "\n<div>\n    {{if .Success}}\n    <div>\n        <p>Your top-up is successful!</p>\n    </div>\n    {{else}}\n    <div>\n        <h1>Aerospike Inputs</h1>\n    </div>\n    <div></div>\n    <form action=\"/aerospike-inputs.html\" method=\"POST\">\n        <input\n                type=\"text\" placeholder=\"your host IP\" name=\"HostIP\"\n        />\n        <input\n                type=\"text\" placeholder=\"your namespace\" name=\"namespace\"\n        />\n        <input\n                type=\"text\" placeholder=\"your set\" name=\"set\"\n        />\n        <input\n                type=\"text\" placeholder=\"your PK\" name=\"PK\"\n        />\n        <input\n                type=\"text\" placeholder=\"your name\" name=\"name\"\n        />\n        <input\n                type=\"text\" placeholder=\"your age\" name=\"age\"\n        />\n        <input  type=\"submit\" value=\"submit\" />\n    </form>\n    {{end}}\n</div>"
+	const tmpl = "<div>\n    {{if .Success}}\n    <div>\n        <p>Record is successfully created!</p>\n    </div>\n    {{else}}\n    <div>\n        <h1>Aerospike Inputs</h1>\n    </div>\n    <div></div>\n    <form action=\"/aerospike-inputs.html\" method=\"POST\">\n        <input\n                type=\"text\" placeholder=\" host IP\" name=\"HostIP\"\n        />\n        <input\n                type=\"text\" placeholder=\" namespace\" name=\"namespace\"\n        />\n        <input\n                type=\"text\" placeholder=\" set\" name=\"set\"\n        />\n        <input\n                type=\"text\" placeholder=\" PK\" name=\"PK\"\n        />\n        <input\n                type=\"text\" placeholder=\" bin1 name\" name=\"bin1name\"\n        />\n        <input\n                type=\"text\" placeholder=\" bin1 value\" name=\"bin1value\"\n        />\n        <input\n                type=\"text\" placeholder=\" bin2 name\" name=\"bin2name\"\n        />\n        <input\n                type=\"text\" placeholder=\" bin2 value\" name=\"bin2value\"\n        />\n        <input  type=\"submit\" value=\"submit\" />\n    </form>\n    {{end}}\n</div>"
 
 	t, err := template.New("Aerospike-Inputs").Parse(tmpl)
 	if err != nil {
@@ -44,13 +46,19 @@ func main() {
 			return
 		}
 		fmt.Println("Server works!")
+		err := t.Execute(w, struct{ Success bool }{true})
+		if err != nil {
+			return
+		}
 
 		hostName = r.FormValue("HostIP")
 		namespace = r.FormValue("namespace")
 		setName = r.FormValue("set")
 		myKey = r.FormValue("PK")
-		name = r.FormValue("name")
-		age = r.FormValue("age")
+		bin1name = r.FormValue("bin1name")
+		bin1value = r.FormValue("bin1value")
+		bin2name = r.FormValue("bin2name")
+		bin2value = r.FormValue("bin2value")
 
 		client, err := aero.NewClient(hostName, ClusterPort)
 		panicOnError(err)
@@ -65,8 +73,8 @@ func main() {
 		// define some bins with data
 		bins := aero.BinMap{
 			//	"PK":   myKey,
-			"name": name,
-			"age":  age,
+			bin1name: bin1value,
+			bin2name: bin2value,
 		}
 
 		// write the bins
@@ -83,4 +91,5 @@ func main() {
 
 	})
 	http.ListenAndServe(":8000", nil)
+
 }
